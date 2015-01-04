@@ -81,7 +81,7 @@ deconstructType :: Error -> Type -> Q ([Name], Cxt, Type)
 deconstructType err ty0@(ForallT xs ctx ty) = do
   let plain (PlainTV _) = True
       plain _ = False
-  unless (all plain xs) $ err "Higher-kinded type variables in type"
+  unless (all plain xs) $ err $ "Higher-kinded type variables in type: " ++ show (filter (not . plain) xs)
   return (map (\(PlainTV x) -> x) xs, ctx, ty)
 deconstructType _ ty = return ([], [], ty)
 
